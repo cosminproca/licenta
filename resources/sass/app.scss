@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import 'elements/transitions';
+
+#app {
+  @apply min-h-screen bg-blue-50 #{!important};
+}
