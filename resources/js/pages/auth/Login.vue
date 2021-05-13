@@ -1,10 +1,11 @@
 <template>
-  <div class="flex mt-6">
+  <div class="flex mt-10">
     <div class="w-full md:w-2/3 md:mx-auto md:max-w-md">
       <card :title="$t('login')">
         <form @submit.prevent="login" @keydown="form.onKeydown($event)">
           <!-- Email -->
           <text-input
+            v-model="form.email"
             name="email"
             :form="form"
             :label="$t('email')"
@@ -13,6 +14,7 @@
 
           <!-- Password -->
           <text-input
+            v-model="form.password"
             class="mt-8"
             native-type="password"
             name="password"
@@ -57,7 +59,7 @@
 <script>
 import Form from 'vform';
 import Cookies from 'js-cookie';
-import LoginWithGithub from '~/components/LoginWithGithub';
+import LoginWithGithub from '@/components/LoginWithGithub';
 
 export default {
   components: {
@@ -70,13 +72,15 @@ export default {
     return { title: this.$t('login') };
   },
 
-  data: () => ({
-    form: new Form({
-      email: '',
-      password: ''
-    }),
-    remember: false
-  }),
+  data() {
+    return {
+      form: new Form({
+        email: '',
+        password: ''
+      }),
+      remember: false
+    };
+  },
 
   methods: {
     async login() {
@@ -84,7 +88,7 @@ export default {
       const { data } = await this.form.post('/api/login');
 
       // Save the token.
-      this.$store.dispatch('auth/saveToken', {
+      await this.$store.dispatch('auth/saveToken', {
         token: data.token,
         remember: this.remember
       });

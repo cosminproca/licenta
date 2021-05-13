@@ -7,6 +7,7 @@
 
           <!-- Email -->
           <text-input
+            v-model="form.email"
             name="email"
             :form="form"
             :label="$t('email')"

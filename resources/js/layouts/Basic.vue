@@ -1,6 +1,6 @@
 <template>
   <div class="basic-layout flex items-center justify-center m-0">
-    <child />
+    <Child />
   </div>
 </template>
 

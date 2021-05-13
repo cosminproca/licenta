@@ -35,5 +35,8 @@
   "send_verification_link": "Enviar link de verificação",
   "resend_verification_link": "Reenviar link de verificação?",
   "failed_to_verify_email": "Falha ao verificar o email.",
-  "verify_email_address": "Enviamos um e-mail com o link de verificação."
+  "verify_email_address": "Enviamos um e-mail com o link de verificação.",
+  "dashboard": {
+    "page_title": "Dashboard"
+  }
 }

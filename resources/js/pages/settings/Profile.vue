@@ -5,6 +5,7 @@
 
       <!-- Name -->
       <text-input
+        v-model="form.name"
         name="name"
         :form="form"
         :label="$t('name')"
@@ -13,6 +14,7 @@
 
       <!-- Email -->
       <text-input
+        v-model="form.email"
         name="email"
         :form="form"
         :label="$t('email')"
@@ -38,12 +40,14 @@ export default {
     return { title: this.$t('settings') };
   },
 
-  data: () => ({
-    form: new Form({
-      name: '',
-      email: ''
-    })
-  }),
+  data() {
+    return {
+      form: new Form({
+        name: '',
+        email: ''
+      })
+    };
+  },
 
   computed: mapGetters({
     user: 'auth/user'

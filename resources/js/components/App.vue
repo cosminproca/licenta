@@ -3,7 +3,7 @@
     <Loading ref="loading" />
 
     <transition name="page" mode="out-in">
-      <component :is="layout" v-if="layout" />
+      <component :is="layout" v-if="layout" class="flex-1" />
     </transition>
   </div>
 </template>
@@ -12,7 +12,7 @@
 import Loading from './Loading';
 
 // Load layout components dynamically.
-const requireContext = require.context('~/layouts', false, /.*\.vue$/);
+const requireContext = require.context('@/layouts', false, /.*\.vue$/);
 
 const layouts = requireContext
   .keys()
@@ -29,10 +29,12 @@ export default {
     Loading
   },
 
-  data: () => ({
-    layout: null,
-    defaultLayout: 'default'
-  }),
+  data() {
+    return {
+      layout: null,
+      defaultLayout: 'Default'
+    };
+  },
 
   metaInfo() {
     const { appName } = window.config;

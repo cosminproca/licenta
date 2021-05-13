@@ -2,11 +2,12 @@
   <div class="flex mt-6">
     <div class="w-full md:w-2/3 md:mx-auto md:max-w-md">
       <card :title="$t('reset_password')">
-        <form @submit.prevent="reset" @keydown="form.onKeydown($event)">
+        <form @submit.prevent="Reset" @keydown="form.onKeydown($event)">
           <alert-success class="mb-4" :form="form" :message="status" />
 
           <!-- Email -->
           <text-input
+            v-model="form.email"
             name="email"
             :form="form"
             :label="$t('email')"
@@ -15,6 +16,7 @@
 
           <!-- Password -->
           <text-input
+            v-model="form.password"
             class="mt-8"
             native-type="password"
             name="password"
@@ -25,6 +27,7 @@
 
           <!-- Password Confirmation-->
           <text-input
+            v-model="form.password_confirmation"
             class="mt-8"
             native-type="password"
             name="password_confirmation"

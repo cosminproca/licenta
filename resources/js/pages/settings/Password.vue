@@ -9,6 +9,7 @@
 
       <!-- Password -->
       <text-input
+        v-model="form.password"
         class="mt-8"
         native-type="password"
         name="password"
@@ -19,6 +20,7 @@
 
       <!-- Password Confirmation-->
       <text-input
+        v-model="form.password_confirmation"
         class="mt-8"
         native-type="password"
         name="password_confirmation"
@@ -45,12 +47,14 @@ export default {
     return { title: this.$t('settings') };
   },
 
-  data: () => ({
-    form: new Form({
-      password: '',
-      password_confirmation: ''
-    })
-  }),
+  data() {
+    return {
+      form: new Form({
+        password: '',
+        password_confirmation: ''
+      })
+    };
+  },
 
   methods: {
     async update() {
