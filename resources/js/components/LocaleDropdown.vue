@@ -1,11 +1,11 @@
 <template>
   <Dropdown
     v-if="Object.keys(locales).length > 1"
-    dropdown-class="origin-top-right absolute right-0 mt-2 w-20 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5"
+    dropdown-class="origin-top-right z-10 absolute right-0 mt-2 w-20 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5"
   >
     <template #trigger="{toggle}">
       <a
-        class="text-gray-300 hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+        class="text-gray-300 md:text-md hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium"
         href="#"
         role="button"
         @click.prevent="toggle"
@@ -28,7 +28,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { loadMessages } from '~/plugins/i18n';
+import { loadMessages } from '@/plugins/i18n';
 import Dropdown from './common/Dropdown';
 
 export default {

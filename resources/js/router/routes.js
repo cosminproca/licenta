@@ -1,51 +1,51 @@
 function page(path) {
   return () =>
-    import(/* webpackChunkName: '' */ `~/pages/${path}`).then(
+    import(/* webpackChunkName: '' */ `@/pages/${path}`).then(
       m => m.default || m
     );
 }
 
 export default [
-  { path: '/', name: 'welcome', component: page('welcome.vue') },
+  { path: '/', name: 'welcome', component: page('Welcome.vue') },
 
-  { path: '/login', name: 'login', component: page('auth/login.vue') },
-  { path: '/register', name: 'register', component: page('auth/register.vue') },
+  { path: '/login', name: 'login', component: page('auth/Login.vue') },
+  { path: '/register', name: 'register', component: page('auth/Register.vue') },
   {
     path: '/password/reset',
     name: 'password.request',
-    component: page('auth/password/email.vue')
+    component: page('auth/password/Email.vue')
   },
   {
     path: '/password/reset/:token',
     name: 'password.reset',
-    component: page('auth/password/reset.vue')
+    component: page('auth/password/Reset.vue')
   },
   {
     path: '/email/verify/:id',
     name: 'verification.verify',
-    component: page('auth/verification/verify.vue')
+    component: page('auth/verification/Verify.vue')
   },
   {
     path: '/email/resend',
     name: 'verification.resend',
-    component: page('auth/verification/resend.vue')
+    component: page('auth/verification/Resend.vue')
   },
 
-  { path: '/home', name: 'home', component: page('home.vue') },
+  { path: '/home', name: 'home', component: page('Home.vue') },
   {
     path: '/settings',
-    component: page('settings/index.vue'),
+    component: page('settings/Index.vue'),
     children: [
       { path: '', redirect: { name: 'settings.profile' } },
       {
         path: 'profile',
         name: 'settings.profile',
-        component: page('settings/profile.vue')
+        component: page('settings/Profile.vue')
       },
       {
         path: 'password',
         name: 'settings.password',
-        component: page('settings/password.vue')
+        component: page('settings/Password.vue')
       }
     ]
   },

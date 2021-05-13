@@ -1,5 +1,5 @@
 <template>
-  <div class="flex mt-6">
+  <div class="flex mt-10">
     <div class="w-full md:w-2/3 md:mx-auto md:max-w-md">
       <card v-if="mustVerifyEmail" :title="$t('register')">
         <div class="text-green-500">
@@ -10,6 +10,7 @@
         <form @submit.prevent="register" @keydown="form.onKeydown($event)">
           <!-- Name -->
           <text-input
+            v-model="form.name"
             name="name"
             :form="form"
             :label="$t('name')"
@@ -18,6 +19,7 @@
 
           <!-- Email -->
           <text-input
+            v-model="form.email"
             name="email"
             :form="form"
             :label="$t('email')"
@@ -26,6 +28,7 @@
 
           <!-- Password -->
           <text-input
+            v-model="form.password"
             class="mt-8"
             native-type="password"
             name="password"
@@ -36,6 +39,7 @@
 
           <!-- Password Confirmation-->
           <text-input
+            v-model="form.password_confirmation"
             class="mt-8"
             native-type="password"
             name="password_confirmation"
@@ -45,7 +49,7 @@
           />
 
           <!-- Submit Button -->
-          <v-button class="w-full" :loading="form.busy">
+          <v-button class="w-full mt-4" :loading="form.busy">
             {{ $t('register') }}
           </v-button>
 
@@ -59,7 +63,7 @@
 
 <script>
 import Form from 'vform';
-import LoginWithGithub from '~/components/LoginWithGithub';
+import LoginWithGithub from '@/components/LoginWithGithub';
 
 export default {
   components: {
@@ -72,15 +76,17 @@ export default {
     return { title: this.$t('register') };
   },
 
-  data: () => ({
-    form: new Form({
-      name: '',
-      email: '',
-      password: '',
-      password_confirmation: ''
-    }),
-    mustVerifyEmail: false
-  }),
+  data() {
+    return {
+      form: new Form({
+        name: '',
+        email: '',
+        password: '',
+        password_confirmation: ''
+      }),
+      mustVerifyEmail: false
+    };
+  },
 
   methods: {
     async register() {
@@ -97,7 +103,7 @@ export default {
         } = await this.form.post('/api/login');
 
         // Save the token.
-        this.$store.dispatch('auth/saveToken', { token });
+        await this.$store.dispatch('auth/saveToken', { token });
 
         // Update the user.
         await this.$store.dispatch('auth/updateUser', { user: data });

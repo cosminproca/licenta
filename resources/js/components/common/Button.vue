@@ -2,11 +2,8 @@
   <button
     :type="nativeType"
     :disabled="loading"
-    :class="
-      `py-2 px-4
-    bg-${color}-600 hover:bg-${color}-700 focus:ring-${color}-500 focus:ring-offset-${color}-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg`
-    "
-    class="btn"
+    class="btn py-2 px-4
+    bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"
   >
     <div v-show="!loading">
       <slot />
@@ -36,7 +33,7 @@ export default {
   props: {
     color: {
       type: String,
-      default: 'indigo'
+      default: 'blue'
     },
 
     nativeType: {

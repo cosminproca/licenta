@@ -25,9 +25,11 @@ export default {
     checked: { type: Boolean, default: false }
   },
 
-  data: () => ({
-    internalValue: false
-  }),
+  data() {
+    return {
+      internalValue: false
+    };
+  },
 
   watch: {
     value(val) {

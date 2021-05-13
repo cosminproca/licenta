@@ -5,11 +5,11 @@
         <div class="flex items-center">
           <router-link
             :to="{ name: user ? 'home' : 'welcome' }"
-            class="flex-shrink-0"
+            class="flex-shrink-0 md:text-2xl"
           >
             {{ appName }}
           </router-link>
-          <LocaleDropdown />
+          <LocaleDropdown class="md:ml-5" />
         </div>
         <div class="block">
           <div class="ml-4 flex items-center md:ml-6">
@@ -20,7 +20,7 @@
                     <button
                       id="dropdown-menu-button"
                       type="button"
-                      class="flex items-center justify-center w-full rounded-md  px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-50 hover:bg-gray-50 dark:hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-gray-500"
+                      class="flex items-center justify-center w-full rounded-md px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-50 hover:bg-gray-50 dark:hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-gray-500"
                       dusk="nav-dropdown-button"
                       @click.prevent="toggle()"
                     >
@@ -81,14 +81,14 @@
                 <div v-else>
                   <router-link
                     :to="{ name: 'login' }"
-                    class="text-gray-300 hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                    class="text-gray-300 md:text-xl hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                     active-class="text-gray-800 dark:text-white"
                   >
                     {{ $t('login') }}
                   </router-link>
                   <router-link
                     :to="{ name: 'register' }"
-                    class="text-gray-300 hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                    class="text-gray-300 md:text-xl hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                     active-class="text-gray-800 dark:text-white"
                   >
                     {{ $t('register') }}
@@ -114,9 +114,11 @@ export default {
     LocaleDropdown
   },
 
-  data: () => ({
-    appName: window.config.appName
-  }),
+  data() {
+    return {
+      appName: window.config.appName
+    };
+  },
 
   computed: mapGetters({
     user: 'auth/user'

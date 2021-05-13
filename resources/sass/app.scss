@@ -3,7 +3,10 @@
 @tailwind utilities;
 
 @import 'elements/transitions';
+@import 'elements/buttons';
+@import 'elements/navbar';
+@import 'elements/card';
 
 #app {
-  @apply min-h-screen bg-blue-50 #{!important};
+  @apply min-h-screen flex flex-col bg-blue-50;
 }

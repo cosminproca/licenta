@@ -1,4 +1,4 @@
-import store from '~/store';
+import store from '@/store';
 
 /**
  * This is middleware to check the current user role.

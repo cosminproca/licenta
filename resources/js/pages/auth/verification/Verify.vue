@@ -59,9 +59,11 @@ export default {
     return { title: this.$t('verify_email') };
   },
 
-  data: () => ({
-    error: '',
-    success: ''
-  })
+  data() {
+    return {
+      error: '',
+      success: ''
+    };
+  }
 };
 </script>

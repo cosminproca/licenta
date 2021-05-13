@@ -5,7 +5,7 @@
   "error_alert_text": "Something went wrong! Please try again.",
   "token_expired_alert_title": "Session Expired!",
   "token_expired_alert_text": "Please log in again to continue.",
-  "login": "Log In",
+  "login": "Login",
   "register": "Register",
   "page_not_found": "Page Not Found",
   "go_home": "Go Home",
@@ -23,8 +23,8 @@
   "send_password_reset_link": "Send Password Reset Link",
   "settings": "Settings",
   "profile": "Profile",
-  "your_info": "Your Info",
-  "info_updated": "Your info has been updated!",
+  "your_info": "Your Profile",
+  "info_updated": "Your profile has been updated!",
   "update": "Update",
   "your_password": "Your Password",
   "password_updated": "Your password has been updated!",
@@ -35,5 +35,8 @@
   "send_verification_link": "Send Verification Link",
   "resend_verification_link": "Resend Verification Link ?",
   "failed_to_verify_email": "Failed to verify email.",
-  "verify_email_address": "We sent you an email with an the verification link."
+  "verify_email_address": "We sent you an email with an the verification link.",
+  "dashboard": {
+    "page_title": "Dashboard"
+  }
 }
