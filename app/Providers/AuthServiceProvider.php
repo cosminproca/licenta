@@ -2,7 +2,15 @@
 
 namespace App\Providers;
 
+use App\Models\SubTask;
+use App\Models\Task;
+use App\Models\TaskList;
+use App\Policies\SubTaskPolicy;
+use App\Policies\TaskListPolicy;
+use App\Policies\TaskPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use App\Models\Team;
+use App\Policies\TeamPolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -12,7 +20,10 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+        Team::class => TeamPolicy::class,
+        TaskList::class => TaskListPolicy::class,
+        Task::class => TaskPolicy::class,
+        SubTask::class => SubTaskPolicy::class
     ];
 
     /**
@@ -23,7 +34,5 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-
-        //
     }
 }

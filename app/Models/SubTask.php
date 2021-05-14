@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\TeamOwned;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Tags\HasTags;
 
 class SubTask extends Model
 {
-    use HasFactory, HasTags;
+    use HasFactory, HasTags, TeamOwned;
 
     protected $fillable = [
         'task_id',
