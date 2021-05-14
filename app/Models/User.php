@@ -5,15 +5,16 @@ namespace App\Models;
 use App\Notifications\ResetPassword;
 use App\Notifications\VerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Mpociot\Teamwork\Traits\UserHasTeams;
 
 class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
 {
-    use Notifiable,
-        HasFactory;
+    use Notifiable, HasFactory, UserHasTeams;
 
     /**
      * The attributes that are mass assignable.
@@ -70,7 +71,17 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
     /**
      * Get the oauth providers.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
+     */
+    public function teams()
+    {
+        return $this->hasMany(Team::class, 'owner_id', 'id');
+    }
+
+    /**
+     * Get the oauth providers.
+     *
+     * @return HasMany
      */
     public function oauthProviders()
     {

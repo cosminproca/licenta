@@ -24,8 +24,10 @@ class StoreSubTaskRequest extends FormRequest
     public function rules()
     {
         return [
+            'team_id' => [],
             'task_id' => [],
             'assignee_id' => [],
+            'tags' => [],
             'name' => [],
             'description' => [],
             'due_date' => []

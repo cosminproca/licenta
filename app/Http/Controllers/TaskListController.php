@@ -6,6 +6,7 @@ use App\Http\Requests\StoreTaskListRequest;
 use App\Http\Requests\UpdateTaskListRequest;
 use App\Http\Resources\TaskListResource;
 use App\Models\TaskList;
+use App\Models\Team;
 use Illuminate\Http\JsonResponse;
 
 class TaskListController extends Controller
@@ -16,12 +17,18 @@ class TaskListController extends Controller
         'tasks.assignee'
     ];
 
+    public function __construct()
+    {
+        $this->authorizeResource(TaskList::class, 'taskList,team');
+    }
+
     /**
      * Display a listing of the resource.
      *
+     * @param Team $team
      * @return JsonResponse
      */
-    public function index()
+    public function index(Team $team)
     {
         return response()->json(TaskListResource::collection(TaskList::all()->load($this->relations)));
     }
@@ -29,10 +36,11 @@ class TaskListController extends Controller
     /**
      * Store a newly created resource in storage.
      *
+     * @param Team $team
      * @param StoreTaskListRequest $request
      * @return JsonResponse
      */
-    public function store(StoreTaskListRequest $request)
+    public function store(Team $team, StoreTaskListRequest $request)
     {
         $validated_data = $request->validated();
         $taskList = TaskList::create($validated_data);
@@ -48,10 +56,11 @@ class TaskListController extends Controller
     /**
      * Display the specified resource.
      *
+     * @param Team $team
      * @param TaskList $taskList
      * @return JsonResponse
      */
-    public function show(TaskList $taskList)
+    public function show(Team $team, TaskList $taskList)
     {
         return response()->json(new TaskListResource($taskList->load($this->relations)));
     }
@@ -59,14 +68,14 @@ class TaskListController extends Controller
     /**
      * Update the specified resource in storage.
      *
+     * @param Team $team
      * @param UpdateTaskListRequest $request
      * @param TaskList $taskList
      * @return JsonResponse
      */
-    public function update(UpdateTaskListRequest $request, TaskList $taskList)
+    public function update(Team $team, UpdateTaskListRequest $request, TaskList $taskList)
     {
         $validated_data = $request->validated();
-
         $status = $taskList->update($validated_data);
 
         return response()->json([
@@ -78,10 +87,11 @@ class TaskListController extends Controller
     /**
      * Remove the specified resource from storage.
      *
+     * @param Team $team
      * @param TaskList $taskList
      * @return JsonResponse
      */
-    public function destroy(TaskList $taskList)
+    public function destroy(Team $team, TaskList $taskList)
     {
         return response()->json([
             'status' => $taskList->delete()
