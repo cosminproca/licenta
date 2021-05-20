@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\Settings\PasswordController;
 use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\SubTaskController;
@@ -50,7 +51,8 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::apiResources([
             'teams.task_lists' => TaskListController::class,
             'teams.tasks' => TaskController::class,
-            'teams.sub_tasks' => SubTaskController::class
+            'teams.sub_tasks' => SubTaskController::class,
+            'teams.tasks.comments' => CommentController::class
         ]);
     });
 });

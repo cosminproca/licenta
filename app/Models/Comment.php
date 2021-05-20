@@ -6,18 +6,24 @@ use App\Traits\TeamOwned;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TaskList extends Model
+class Comment extends Model
 {
     use HasFactory, TeamOwned;
 
     protected $fillable = [
         'team_id',
-        'name',
-        'due_date'
+        'user_id',
+        'task_id',
+        'text',
     ];
 
-    public function tasks()
+    public function user()
     {
-        return $this->hasMany(Task::class);
+        return $this->belongsTo(User::class);
+    }
+
+    public function task()
+    {
+        return $this->belongsTo(Task::class);
     }
 }

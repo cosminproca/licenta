@@ -2,18 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\TaskList;
-use App\Models\Team;
+use App\Models\File;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class TaskListFactory extends Factory
+class FileFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = TaskList::class;
+    protected $model = File::class;
 
     /**
      * Define the model's default state.
@@ -23,8 +22,7 @@ class TaskListFactory extends Factory
     public function definition()
     {
         return [
-            'team_id' => Team::factory(),
-            'name' => $this->faker->randomElement(['Backlog', 'Progress', 'Completed'])
+            //
         ];
     }
 }
