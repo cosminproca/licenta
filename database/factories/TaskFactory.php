@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Enums\TaskPriorityType;
 use App\Models\Task;
 use App\Models\TaskList;
+use App\Models\Team;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -25,6 +26,7 @@ class TaskFactory extends Factory
     public function definition()
     {
         return [
+            'team_id' => Team::factory(),
             'task_list_id' => TaskList::factory(),
             'assignee_id' => User::factory(),
             'name' => 'Test ' . $this->faker->randomDigit(),

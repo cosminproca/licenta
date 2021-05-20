@@ -6,7 +6,6 @@ use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
-use App\Models\TaskList;
 use App\Models\Team;
 use Illuminate\Http\JsonResponse;
 

@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\Comment;
 use App\Models\SubTask;
 use App\Models\Task;
 use App\Models\TaskList;
+use App\Policies\CommentPolicy;
 use App\Policies\SubTaskPolicy;
 use App\Policies\TaskListPolicy;
 use App\Policies\TaskPolicy;
@@ -23,7 +25,8 @@ class AuthServiceProvider extends ServiceProvider
         Team::class => TeamPolicy::class,
         TaskList::class => TaskListPolicy::class,
         Task::class => TaskPolicy::class,
-        SubTask::class => SubTaskPolicy::class
+        SubTask::class => SubTaskPolicy::class,
+        Comment::class => CommentPolicy::class
     ];
 
     /**
