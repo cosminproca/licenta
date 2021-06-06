@@ -23,7 +23,7 @@ class TaskListFactory extends Factory
     public function definition()
     {
         return [
-            'team_id' => Team::factory(),
+            'team_id' => $this->faker->randomNumber(),
             'name' => $this->faker->randomElement(['Backlog', 'Progress', 'Completed'])
         ];
     }

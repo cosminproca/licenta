@@ -19,6 +19,8 @@
     "vue-i18n": "^8.22.1",
     "vue-meta": "^2.4.0",
     "vue-router": "^3.4.8",
+    "vue-sidebar-modal": "^1.0.0",
+    "vuedraggable": "^2.24.3",
     "vuex": "^3.5.1",
     "vuex-router-sync": "^5.0.0"
   },

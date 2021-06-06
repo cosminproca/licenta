@@ -48,6 +48,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     });
 
     Route::group(['middleware' => 'team.check'], function () {
+        Route::put('/teams/{team}/task_lists/update_all', [TaskListController::class, 'updateAll'])->name('teams.task_lists.update_all');
+
         Route::apiResources([
             'teams.task_lists' => TaskListController::class,
             'teams.tasks' => TaskController::class,

@@ -17,7 +17,7 @@ use Mpociot\Teamwork\TeamInvite;
 
 class TeamController extends Controller
 {
-    private $relations = [
+    private array $relations = [
         'owner',
         'users',
         'invites'
@@ -35,7 +35,7 @@ class TeamController extends Controller
      */
     public function index()
     {
-        return response()->json(TeamResource::collection(Team::all()->load($this->relations)));
+        return response()->json(TeamResource::collection(Team::where('owner_id', auth()->user()->id)->get()->load($this->relations)));
     }
 
     /**

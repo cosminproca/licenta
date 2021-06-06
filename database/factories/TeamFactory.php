@@ -2,20 +2,18 @@
 
 namespace Database\Factories;
 
-use App\Models\Comment;
-use App\Models\Task;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class CommentFactory extends Factory
+class TeamFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Comment::class;
+    protected $model = Team::class;
 
     /**
      * Define the model's default state.
@@ -25,10 +23,8 @@ class CommentFactory extends Factory
     public function definition()
     {
         return [
-            'team_id' => Team::factory(),
-            'task_id' => Task::factory(),
-            'user_id' => 1,
-            'text' => $this->faker->text,
+            'owner_id' => 1,
+            'name' => 'Team ' . $this->faker->randomDigit()
         ];
     }
 }

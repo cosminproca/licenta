@@ -6,6 +6,12 @@ function page(path) {
 }
 
 export default [
+  {
+    path: '/teams/:id',
+    name: 'teams.show',
+    component: page('teams/Show.vue')
+  },
+
   { path: '/', name: 'welcome', component: page('Welcome.vue') },
 
   { path: '/login', name: 'login', component: page('auth/Login.vue') },

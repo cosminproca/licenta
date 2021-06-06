@@ -15,6 +15,7 @@ class CreateTasksTable extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
+            $table->integer('order_column');
             $table->foreignId('team_id');
             $table->foreignId('task_list_id');
             $table->foreignId('assignee_id')->nullable();

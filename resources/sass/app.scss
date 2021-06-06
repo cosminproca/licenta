@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+@import "~vue-sidebar-modal/dist/vue-sidebar-modal";
 @import 'elements/transitions';
 @import 'elements/buttons';
 @import 'elements/navbar';

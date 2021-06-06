@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateTaskListRequest extends FormRequest
+class UpdateAllTaskListRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,7 @@ class UpdateTaskListRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => [],
-            'team_id' => [],
-            'tasks' => []
+            'task_lists' => []
         ];
     }
 }

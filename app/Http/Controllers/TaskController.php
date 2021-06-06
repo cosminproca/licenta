@@ -20,7 +20,7 @@ class TaskController extends Controller
 
     public function __construct()
     {
-        $this->authorizeResource(Task::class, 'task,team');
+        //$this->authorizeResource(Task::class, 'task,team');
     }
 
     /**
@@ -45,7 +45,10 @@ class TaskController extends Controller
     {
         $validated_data = $request->validated();
         $task = Task::create($validated_data);
-        $task->syncTags($validated_data['tags']);
+
+        if(isset($validated_data['tags'])) {
+            $task->syncTags($validated_data['tags']);
+        }
 
         $status = $task->save();
 
@@ -81,7 +84,9 @@ class TaskController extends Controller
 
         $status = $task->update($validated_data);
 
-        $task->syncTags($validated_data['tags']);
+        if(isset($validated_data['tags'])) {
+            $task->syncTags($validated_data['tags']);
+        }
 
         return response()->json([
             'status' => $status,

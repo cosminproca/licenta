@@ -1,7 +1,10 @@
+import Vue from 'vue';
 import axios from 'axios';
 import store from '@/store';
 import router from '@/router';
-import i18n from '@/plugins/i18n';
+// import i18n from '@/plugins/i18n';
+
+axios.defaults.baseURL = process.env.MIX_APP_URL?.replace(/([^/])$/, '$1/');
 
 // Request interceptor
 axios.interceptors.request.use(request => {
@@ -42,3 +45,7 @@ axios.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+Vue.prototype.$axios = axios;
+
+export default axios;
