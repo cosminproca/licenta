@@ -16,12 +16,14 @@ class Task extends Model implements Sortable
     protected $fillable = [
         'task_list_id',
         'assignee_id',
+        'completed',
         'name',
         'description',
         'priority',
         'time',
         'time_estimation',
-        'due_date'
+        'due_date',
+        'order_column'
     ];
 
     public function taskList()
@@ -31,7 +33,7 @@ class Task extends Model implements Sortable
 
     public function subTasks()
     {
-        return $this->hasMany(SubTask::class);
+        return $this->hasMany(SubTask::class)->orderBy('order_column');
     }
 
     public function assignee()

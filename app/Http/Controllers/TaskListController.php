@@ -33,7 +33,7 @@ class TaskListController extends Controller
      */
     public function index(Team $team)
     {
-        return response()->json(TaskListResource::collection(TaskList::all()->load($this->relations)));
+        return response()->json(TaskListResource::collection(TaskList::all()->load($this->relations)->sortBy('order_column')));
     }
 
     /**
@@ -100,26 +100,10 @@ class TaskListController extends Controller
     public function updateAll(Team $team, UpdateAllTaskListRequest $request, TaskList $taskList)
     {
         $validated_data = $request->validated();
-        //$status = $taskList->update($validated_data);
 
-        $task_lists = TaskList::all()->load($this->relations);
+        $this->updateTaskListOrder($validated_data);
 
-        foreach ($task_lists as $task_list) {
-            $task_list->timestamps = false;
-            $id = $task_list->id;
-
-            foreach ($validated_data['task_lists'] as $taskListFrontEnd) {
-                if ($taskListFrontEnd['id'] == $id) {
-                    $task_list->update(['order_column' => $taskListFrontEnd['order_column']]);
-                    $tasks = Task::findMany(collect($taskListFrontEnd['tasks'])->pluck('id'));
-                    $task_list->tasks()->delete();
-                    $task_list->tasks()->saveMany($tasks);
-                    $task_list->save();
-                }
-            }
-        }
-
-        return response()->json(TaskListResource::collection(TaskList::all()->load($this->relations)));
+        return response()->json(TaskListResource::collection(TaskList::all()->load($this->relations)->sortBy('order_column')));
     }
 
     /**
@@ -131,8 +115,50 @@ class TaskListController extends Controller
      */
     public function destroy(Team $team, TaskList $taskList)
     {
+        $taskList->tasks()->delete();
+
         return response()->json([
             'status' => $taskList->delete()
         ]);
+    }
+
+    private function updateTaskListTasksOrder($taskListFrontEnd)
+    {
+        $tasks = Task::findMany(collect($taskListFrontEnd['tasks'])->pluck('id'));
+
+        foreach ($tasks as $task) {
+            $task->timestamps = false;
+
+            foreach ($taskListFrontEnd['tasks'] as $taskFrontEnd) {
+                if ($taskFrontEnd['id'] == $task->id) {
+                    $task->update(['order_column' => $taskFrontEnd['order_column']]);
+                    $task->save();
+                }
+            }
+        }
+
+        return $tasks;
+    }
+
+    private function updateTaskListOrder(array $validated_data)
+    {
+        $task_lists = TaskList::all()->load($this->relations);
+
+        foreach ($task_lists as $task_list) {
+            $task_list->timestamps = false;
+
+            foreach ($validated_data['task_lists'] as $taskListFrontEnd) {
+                if ($taskListFrontEnd['id'] == $task_list->id) {
+                    $task_list->update(['order_column' => $taskListFrontEnd['order_column']]);
+                    $task_list->save();
+
+                    $tasks = $this->updateTaskListTasksOrder($taskListFrontEnd);
+
+                    $task_list->tasks()->saveMany($tasks);
+                    $task_list->save();
+                    $task_list->refresh();
+                }
+            }
+        }
     }
 }

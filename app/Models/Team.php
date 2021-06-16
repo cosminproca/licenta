@@ -13,4 +13,9 @@ class Team extends TeamworkTeam
     {
         return $this->hasMany(TaskList::class);
     }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
 }

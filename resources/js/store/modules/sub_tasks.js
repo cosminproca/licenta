@@ -3,7 +3,13 @@ import { SET_DATA, REMOVE_DATA, SET_MODEL, RESET_MODEL } from '@/utils/store';
 import Form from 'vform';
 
 const base = new Form({
-  name: ''
+  id: 0,
+  task_id: 0,
+  team_id: 0,
+  completed: false,
+  name: '',
+  description: '',
+  due_date: ''
 });
 
 export const state = {

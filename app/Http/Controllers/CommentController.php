@@ -12,7 +12,7 @@ use Illuminate\Http\JsonResponse;
 
 class CommentController extends Controller
 {
-    private $relations = [
+    private array $relations = [
         'user',
         'task'
     ];

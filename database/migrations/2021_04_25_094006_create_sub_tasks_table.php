@@ -19,6 +19,7 @@ class CreateSubTasksTable extends Migration
             $table->foreignId('team_id');
             $table->foreignId('task_id');
             $table->foreignId('assignee_id')->nullable();
+            $table->boolean('completed')->default(false);
             $table->string('name');
             $table->text('description')->nullable();
             $table->date('due_date')->nullable();

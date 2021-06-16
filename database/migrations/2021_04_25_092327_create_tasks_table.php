@@ -19,6 +19,7 @@ class CreateTasksTable extends Migration
             $table->foreignId('team_id');
             $table->foreignId('task_list_id');
             $table->foreignId('assignee_id')->nullable();
+            $table->boolean('completed')->default(false);
             $table->string('name');
             $table->text('description')->nullable();
             $table->string('priority')->nullable();

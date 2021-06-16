@@ -31,11 +31,30 @@ axios.interceptors.response.use(
 
     if (status >= 500) {
       // TODO: alert
+      Vue.$toast.error('Operation failed due to server errors');
       console.log(status);
+    }
+
+    if (status === 404 && store.getters['auth/check']) {
+      // TODO: alert
+      Vue.$toast.error('Resource not found');
+      console.log(status);
+    }
+
+    if (status === 403 && store.getters['auth/check']) {
+      // TODO: alert
+      Vue.$toast.error('Unauthorized');
+
+      console.log(status);
+      store.commit('auth/LOGOUT');
+
+      router.push({ name: 'login' });
     }
 
     if (status === 401 && store.getters['auth/check']) {
       // TODO: alert
+      Vue.$toast.error('Unauthenticated');
+
       console.log(status);
       store.commit('auth/LOGOUT');
 

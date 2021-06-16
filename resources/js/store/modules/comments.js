@@ -1,19 +1,9 @@
-import { index, show, store, update, destroy } from '@/api/tasks';
+import { index, show, store, update, destroy } from '@/api/comments';
 import { SET_DATA, REMOVE_DATA, SET_MODEL, RESET_MODEL } from '@/utils/store';
 import Form from 'vform';
 
 const base = new Form({
-  id: 0,
-  task_list_id: 0,
-  team_id: 0,
-  completed: false,
-  name: '',
-  description: '',
-  time: '',
-  time_estimation: '',
-  priority: null,
-  due_date: '',
-  tags: []
+  name: ''
 });
 
 export const state = {
@@ -66,7 +56,7 @@ export const actions = {
     return res;
   },
 
-  async destroy({ commit }, { teamId, id }) {
-    return await destroy(teamId, id);
+  async destroy({ commit }, id) {
+    return await destroy(id);
   }
 };

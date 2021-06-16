@@ -35,7 +35,7 @@ class TeamController extends Controller
      */
     public function index()
     {
-        return response()->json(TeamResource::collection(Team::where('owner_id', auth()->user()->id)->get()->load($this->relations)));
+        return response()->json(TeamResource::collection(auth()->user()->teams->load($this->relations)));
     }
 
     /**

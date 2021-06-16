@@ -15,11 +15,12 @@ class TaskList extends Model implements Sortable
     protected $fillable = [
         'team_id',
         'name',
-        'due_date'
+        'due_date',
+        'order_column'
     ];
 
     public function tasks()
     {
-        return $this->hasMany(Task::class);
+        return $this->hasMany(Task::class)->orderBy('order_column');
     }
 }

@@ -3,7 +3,7 @@
     <Loading ref="loading" />
 
     <transition name="page" mode="out-in">
-      <component :is="layout" v-if="layout" class="flex-1" />
+      <component :is="layout" v-if="layout" class="flex flex-col flex-1" />
     </transition>
 
     <sidebar-modals-container />

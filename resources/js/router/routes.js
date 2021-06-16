@@ -12,6 +12,12 @@ export default [
     component: page('teams/Show.vue')
   },
 
+  {
+    path: '/teams/:id/tasks/:taskId',
+    name: 'teams.task.show',
+    component: page('teams/Show.vue')
+  },
+
   { path: '/', name: 'welcome', component: page('Welcome.vue') },
 
   { path: '/login', name: 'login', component: page('auth/Login.vue') },

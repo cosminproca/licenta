@@ -18,7 +18,8 @@ class SubTask extends Model implements Sortable
         'assignee_id',
         'name',
         'description',
-        'due_date'
+        'due_date',
+        'order_column'
     ];
 
     public function task()
