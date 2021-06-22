@@ -5,12 +5,14 @@ namespace App\Models;
 use App\Notifications\ResetPassword;
 use App\Notifications\VerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
-use Mpociot\Teamwork\Traits\UserHasTeams;
+use App\Traits\UserHasTeams;
 
 class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
 {
@@ -71,11 +73,11 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
     /**
      * Get the oauth providers.
      *
-     * @return HasMany
+     * @return BelongsToMany
      */
     public function teams()
     {
-        return $this->hasMany(Team::class, 'owner_id', 'id');
+        return $this->belongsToMany(Team::class);
     }
 
     /**

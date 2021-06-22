@@ -1,7 +1,10 @@
+import Vue from 'vue';
 import axios from 'axios';
 import store from '@/store';
 import router from '@/router';
-import i18n from '@/plugins/i18n';
+// import i18n from '@/plugins/i18n';
+
+axios.defaults.baseURL = process.env.MIX_APP_URL?.replace(/([^/])$/, '$1/');
 
 // Request interceptor
 axios.interceptors.request.use(request => {
@@ -28,11 +31,30 @@ axios.interceptors.response.use(
 
     if (status >= 500) {
       // TODO: alert
+      Vue.$toast.error('Operation failed due to server errors');
       console.log(status);
+    }
+
+    if (status === 404 && store.getters['auth/check']) {
+      // TODO: alert
+      Vue.$toast.error('Resource not found');
+      console.log(status);
+    }
+
+    if (status === 403 && store.getters['auth/check']) {
+      // TODO: alert
+      Vue.$toast.error('Unauthorized');
+
+      console.log(status);
+      store.commit('auth/LOGOUT');
+
+      router.push({ name: 'login' });
     }
 
     if (status === 401 && store.getters['auth/check']) {
       // TODO: alert
+      Vue.$toast.error('Unauthenticated');
+
       console.log(status);
       store.commit('auth/LOGOUT');
 
@@ -42,3 +64,7 @@ axios.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+Vue.prototype.$axios = axios;
+
+export default axios;

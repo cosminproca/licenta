@@ -8,6 +8,7 @@ use App\Http\Requests\StoreTeamRequest;
 use App\Http\Requests\UpdateTeamRequest;
 use App\Http\Resources\TeamResource;
 use App\Models\Team;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -17,7 +18,7 @@ use Mpociot\Teamwork\TeamInvite;
 
 class TeamController extends Controller
 {
-    private $relations = [
+    private array $relations = [
         'owner',
         'users',
         'invites'
@@ -35,7 +36,7 @@ class TeamController extends Controller
      */
     public function index()
     {
-        return response()->json(TeamResource::collection(Team::all()->load($this->relations)));
+        return response()->json(TeamResource::collection(auth()->user()->teams->load($this->relations)));
     }
 
     /**
@@ -140,7 +141,7 @@ class TeamController extends Controller
 
         if (! Teamwork::hasPendingInvite($validated_data['email'], $team)) {
             Teamwork::inviteToTeam($validated_data['email'], $team, function ($invite) {
-                Mail::send('teamwork.emails.invite', ['team' => $invite->team, 'invite' => $invite], function ($m) use ($invite) {
+                Mail::send('emails.invite', ['team' => $invite->team, 'invite' => $invite], function ($m) use ($invite) {
                     $m->to($invite->email)->subject('Invitation to join team '.$invite->team->name);
                 });
             });
@@ -167,13 +168,36 @@ class TeamController extends Controller
     {
         $invite = TeamInvite::findOrFail($invite_id);
 
-        Mail::send('teamwork.emails.invite', ['team' => $invite->team, 'invite' => $invite], function ($m) use ($invite) {
+        Mail::send('emails.invite', ['team' => $invite->team, 'invite' => $invite], function ($m) use ($invite) {
             $m->to($invite->email)->subject('Invitation to join team '.$invite->team->name);
         });
 
         return response()->json([
             'status' => true,
             'message' => 'Invitation email resent successfully.'
+        ]);
+    }
+
+    /**
+     * Accept the given invite
+     * @param $token
+     * @return JsonResponse
+     */
+    public function acceptInvite($token)
+    {
+        $invite = Teamwork::getInviteFromAcceptToken($token);
+
+        if (!$invite) {
+            abort(404);
+        }
+
+        $user = User::where('email', $invite->email)->first();
+        $user->attachTeam($invite->team);
+        $invite->delete();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Team invitation accepted.'
         ]);
     }
 }

@@ -11,7 +11,7 @@ class TaskListPolicy
 {
     use HandlesAuthorization;
 
-    public function viewAny(User $user): bool
+    public function viewAny(User $user, Team $team): bool
     {
         return true;
     }

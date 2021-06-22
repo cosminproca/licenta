@@ -12,14 +12,14 @@ use Illuminate\Http\JsonResponse;
 
 class CommentController extends Controller
 {
-    private $relations = [
+    private array $relations = [
         'user',
         'task'
     ];
 
     public function __construct()
     {
-        $this->authorizeResource(Comment::class, 'comment,team');
+        //$this->authorizeResource(Comment::class, 'comment,team');
     }
 
     /**

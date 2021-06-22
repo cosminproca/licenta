@@ -28,7 +28,7 @@ class TaskFactory extends Factory
         return [
             'team_id' => Team::factory(),
             'task_list_id' => TaskList::factory(),
-            'assignee_id' => User::factory(),
+            'assignee_id' => 1,
             'name' => 'Test ' . $this->faker->randomDigit(),
             'description' => $this->faker->text,
             'priority' => $this->faker->randomElement(TaskPriorityType::asArray()),

@@ -1,12 +1,16 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import './tailwind';
+@import './plugins/plugins';
 
+// prebuilt components
 @import 'elements/transitions';
 @import 'elements/buttons';
 @import 'elements/navbar';
 @import 'elements/card';
 
+// custom classes
+.moving-card {
+  @apply opacity-50 bg-gray-100;
+}
 #app {
   @apply min-h-screen flex flex-col bg-blue-50;
 }

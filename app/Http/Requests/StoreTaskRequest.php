@@ -27,6 +27,7 @@ class StoreTaskRequest extends FormRequest
             'team_id' => [],
             'task_list_id' => [],
             'assignee_id' => [],
+            'completed' => [],
             'tags' => [],
             'name' => [],
             'description' => [],

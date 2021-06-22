@@ -3,15 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTaskListRequest;
+use App\Http\Requests\UpdateAllTaskListRequest;
 use App\Http\Requests\UpdateTaskListRequest;
 use App\Http\Resources\TaskListResource;
+use App\Models\Task;
 use App\Models\TaskList;
 use App\Models\Team;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class TaskListController extends Controller
 {
-    private $relations = [
+    private array $relations = [
         'tasks',
         'tasks.subtasks',
         'tasks.assignee'
@@ -19,7 +22,7 @@ class TaskListController extends Controller
 
     public function __construct()
     {
-        $this->authorizeResource(TaskList::class, 'taskList,team');
+        //$this->authorizeResource(TaskList::class, 'task_list,teams');
     }
 
     /**
@@ -30,7 +33,7 @@ class TaskListController extends Controller
      */
     public function index(Team $team)
     {
-        return response()->json(TaskListResource::collection(TaskList::all()->load($this->relations)));
+        return response()->json(TaskListResource::collection(TaskList::all()->load($this->relations)->sortBy('order_column')));
     }
 
     /**
@@ -42,6 +45,8 @@ class TaskListController extends Controller
      */
     public function store(Team $team, StoreTaskListRequest $request)
     {
+        //$this->authorize('store', [TaskList::class, $team]);
+
         $validated_data = $request->validated();
         $taskList = TaskList::create($validated_data);
 
@@ -85,6 +90,23 @@ class TaskListController extends Controller
     }
 
     /**
+     * Update all resources in storage.
+     *
+     * @param Team $team
+     * @param UpdateAllTaskListRequest $request
+     * @param TaskList $taskList
+     * @return JsonResponse
+     */
+    public function updateAll(Team $team, UpdateAllTaskListRequest $request, TaskList $taskList)
+    {
+        $validated_data = $request->validated();
+
+        $this->updateTaskListOrder($validated_data);
+
+        return response()->json(TaskListResource::collection(TaskList::all()->load($this->relations)->sortBy('order_column')));
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param Team $team
@@ -93,8 +115,50 @@ class TaskListController extends Controller
      */
     public function destroy(Team $team, TaskList $taskList)
     {
+        $taskList->tasks()->delete();
+
         return response()->json([
             'status' => $taskList->delete()
         ]);
+    }
+
+    private function updateTaskListTasksOrder($taskListFrontEnd)
+    {
+        $tasks = Task::findMany(collect($taskListFrontEnd['tasks'])->pluck('id'));
+
+        foreach ($tasks as $task) {
+            $task->timestamps = false;
+
+            foreach ($taskListFrontEnd['tasks'] as $taskFrontEnd) {
+                if ($taskFrontEnd['id'] == $task->id) {
+                    $task->update(['order_column' => $taskFrontEnd['order_column']]);
+                    $task->save();
+                }
+            }
+        }
+
+        return $tasks;
+    }
+
+    private function updateTaskListOrder(array $validated_data)
+    {
+        $task_lists = TaskList::all()->load($this->relations);
+
+        foreach ($task_lists as $task_list) {
+            $task_list->timestamps = false;
+
+            foreach ($validated_data['task_lists'] as $taskListFrontEnd) {
+                if ($taskListFrontEnd['id'] == $task_list->id) {
+                    $task_list->update(['order_column' => $taskListFrontEnd['order_column']]);
+                    $task_list->save();
+
+                    $tasks = $this->updateTaskListTasksOrder($taskListFrontEnd);
+
+                    $task_list->tasks()->saveMany($tasks);
+                    $task_list->save();
+                    $task_list->refresh();
+                }
+            }
+        }
     }
 }

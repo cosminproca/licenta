@@ -1,0 +1,27 @@
+.v-select {
+  @apply h-[50px];
+}
+
+.vs__actions {
+  @apply p-0 m-0;
+}
+
+.vs__selected {
+  @apply p-0;
+}
+
+.vs__selected-options {
+  @apply p-0;
+}
+
+.vs__dropdown-menu {
+  @apply p-0 m-0;
+}
+
+.vs__dropdown-option {
+  @apply px-4 m-0;
+}
+
+.vs__dropdown-toggle {
+  @apply h-[50px] px-3 py-2 bg-white rounded-lg border border-gray-200 focus:outline-none;
+}

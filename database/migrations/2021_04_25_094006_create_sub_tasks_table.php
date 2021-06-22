@@ -15,9 +15,11 @@ class CreateSubTasksTable extends Migration
     {
         Schema::create('sub_tasks', function (Blueprint $table) {
             $table->id();
+            $table->integer('order_column');
             $table->foreignId('team_id');
             $table->foreignId('task_id');
             $table->foreignId('assignee_id')->nullable();
+            $table->boolean('completed')->default(false);
             $table->string('name');
             $table->text('description')->nullable();
             $table->date('due_date')->nullable();

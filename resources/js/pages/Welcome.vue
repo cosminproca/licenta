@@ -2,7 +2,7 @@
   <div>
     <div class="text-center">
       <div class="text-6xl font-thin text-gray-500 mt-16 mb-8" dusk="title">
-        {{ $t('dashboard.page_title') }}
+        {{ $t('welcome.page_title') }}
       </div>
     </div>
   </div>

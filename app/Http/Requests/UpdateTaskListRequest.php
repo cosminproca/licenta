@@ -25,7 +25,8 @@ class UpdateTaskListRequest extends FormRequest
     {
         return [
             'name' => [],
-            'team_id' => []
+            'team_id' => [],
+            'tasks' => []
         ];
     }
 }

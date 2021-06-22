@@ -27,7 +27,7 @@ class CommentFactory extends Factory
         return [
             'team_id' => Team::factory(),
             'task_id' => Task::factory(),
-            'user_id' => User::factory(),
+            'user_id' => 1,
             'text' => $this->faker->text,
         ];
     }

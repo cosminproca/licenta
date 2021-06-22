@@ -27,7 +27,7 @@ class SubTaskFactory extends Factory
         return [
             'team_id' => Team::factory(),
             'task_id' => Task::factory(),
-            'assignee_id' => User::factory(),
+            'assignee_id' => 1,
             'name' => 'Test ' . $this->faker->randomDigit(),
             'description' => $this->faker->text,
             'due_date' => $this->faker->dateTimeThisYear

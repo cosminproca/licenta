@@ -48,16 +48,23 @@ Route::group(['middleware' => 'auth:api'], function () {
     });
 
     Route::group(['middleware' => 'team.check'], function () {
+        Route::put('/teams/{team}/task_lists/update_all', [TaskListController::class, 'updateAll'])->name('teams.task_lists.update_all');
+        Route::put('/teams/{team}/tasks/{task}/update_all', [TaskController::class, 'updateAll'])->name('teams.tasks.update_all');
+
         Route::apiResources([
             'teams.task_lists' => TaskListController::class,
             'teams.tasks' => TaskController::class,
-            'teams.sub_tasks' => SubTaskController::class,
+            'teams.tasks.sub_tasks' => SubTaskController::class,
             'teams.tasks.comments' => CommentController::class
         ]);
     });
 });
 
 Route::group(['middleware' => 'guest:api'], function () {
+    Route::group(['prefix' => 'teams'], function(){
+        Route::get('accept/{token}', [TeamController::class, 'acceptInvite'])->name('teams.accept_invite');
+    });
+
     Route::post('login', [LoginController::class, 'login']);
     Route::post('register', [RegisterController::class, 'register']);
 
