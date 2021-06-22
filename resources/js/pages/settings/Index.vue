@@ -7,7 +7,7 @@
             <router-link
               :to="{ name: tab.route }"
               class="px-6 py-4 flex items-center text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded"
-              active-class="text-indigo-600 bg-indigo-50 hover:bg-indigo-50"
+              active-class="text-blue-600 bg-blue-50 hover:bg-blue-50"
             >
               <template v-if="tab.route == 'settings.profile'">
                 <svg

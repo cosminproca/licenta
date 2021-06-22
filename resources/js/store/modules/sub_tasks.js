@@ -30,39 +30,39 @@ export const mutations = {
 };
 
 export const actions = {
-  async index({ commit }, { teamId }) {
-    const res = await index(teamId);
+  async index({ commit }, { teamId, taskId }) {
+    const res = await index(teamId, taskId);
 
     commit('SET_DATA', res.data);
 
     return res;
   },
 
-  async show({ commit }, { teamId, id }) {
-    const res = await show(teamId, id);
+  async show({ commit }, { teamId, taskId, id }) {
+    const res = await show(teamId, taskId, id);
 
     commit('SET_MODEL', res.data);
 
     return res;
   },
 
-  async store({ commit }, { teamId, form }) {
-    const res = await store(teamId, form);
+  async store({ commit }, { teamId, taskId, form }) {
+    const res = await store(teamId, taskId, form);
 
     commit('SET_MODEL', res.data);
 
     return res;
   },
 
-  async update({ commit }, { teamId, form }) {
-    const res = await update(teamId, form);
+  async update({ commit }, { teamId, taskId, form }) {
+    const res = await update(teamId, taskId, form);
 
     commit('SET_MODEL', res.data);
 
     return res;
   },
 
-  async destroy({ commit }, id) {
-    return await destroy(id);
+  async destroy({ commit }, { teamId, taskId, id }) {
+    return await destroy(teamId, taskId, id);
   }
 };

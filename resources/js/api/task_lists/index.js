@@ -35,6 +35,17 @@ async function store(teamId, form) {
   }
 }
 
+async function updateAll(teamId, taskLists) {
+  try {
+    return await axios.put(`${module(teamId)}/update_all`, {
+      task_lists: taskLists
+    });
+  } catch (err) {
+    console.log(err);
+    return err.response.data;
+  }
+}
+
 async function update(teamId, form) {
   try {
     const res = await axios.put(`${module(teamId)}/${form.id}`, form);
@@ -47,17 +58,6 @@ async function update(teamId, form) {
 
     Vue.$toast.error('TaskList failed to update');
 
-    return err.response.data;
-  }
-}
-
-async function updateAll(teamId, taskLists) {
-  try {
-    return await axios.put(`${module(teamId)}/update_all`, {
-      task_lists: taskLists
-    });
-  } catch (err) {
-    console.log(err);
     return err.response.data;
   }
 }

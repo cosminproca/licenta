@@ -16,6 +16,7 @@ class SubTask extends Model implements Sortable
     protected $fillable = [
         'task_id',
         'assignee_id',
+        'completed',
         'name',
         'description',
         'due_date',

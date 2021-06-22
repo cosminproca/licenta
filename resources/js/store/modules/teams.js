@@ -1,5 +1,5 @@
-import { index, show, store, update, destroy } from '@/api/teams';
-import { SET_DATA, REMOVE_DATA, SET_MODEL, RESET_MODEL } from '@/utils/store';
+import { destroy, index, sendInvite, show, store, update } from '@/api/teams';
+import { REMOVE_DATA, RESET_MODEL, SET_DATA, SET_MODEL } from '@/utils/store';
 import Form from 'vform';
 
 const base = new Form({
@@ -31,6 +31,10 @@ export const actions = {
     commit('SET_DATA', res.data);
 
     return res;
+  },
+
+  async sendInvite({ commit }, { id, form }) {
+    return await sendInvite(id, form);
   },
 
   async show({ commit }, id) {

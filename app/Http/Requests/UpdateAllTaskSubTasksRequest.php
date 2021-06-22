@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreSubTaskRequest extends FormRequest
+class UpdateAllTaskSubTasksRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,14 +24,7 @@ class StoreSubTaskRequest extends FormRequest
     public function rules()
     {
         return [
-            'team_id' => [],
-            'task_id' => [],
-            'assignee_id' => [],
-            'completed' => [],
-            'tags' => [],
-            'name' => [],
-            'description' => [],
-            'due_date' => []
+            'sub_tasks' => []
         ];
     }
 }

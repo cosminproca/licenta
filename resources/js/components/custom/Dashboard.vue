@@ -1,12 +1,32 @@
 <template>
   <div class="grid grid-cols-6 gap-5 pt-5">
     <card v-for="team in teams" :key="team.id" class="w-64 h-32 cursor-pointer">
-      <router-link :to="{ name: 'teams.show', params: { id: team.id } }">
-        <div class="text-2xl font-bold">{{ team.name }}</div>
+      <div
+        class="flex flex-col space-y-2"
+        @click="$router.push({ name: 'teams.show', params: { id: team.id } })"
+      >
+        <div class="flex items-center justify-between">
+          <div class="text-2xl font-bold">{{ team.name }}</div>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6 cursor-pointer"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            @click.stop="showTaskModal(team.id)"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
+            />
+          </svg>
+        </div>
         <div class="font-light">
           Created by <span class="font-semibold">{{ team.owner.name }}</span>
         </div>
-      </router-link>
+      </div>
     </card>
     <div
       class="flex flex-col space-y-3 p-10 w-64 hover:border hover:rounded-xl"
@@ -31,93 +51,12 @@
         @keydown.enter="addTeam"
       />
     </div>
-    <!--    <draggable
-      v-model="sections"
-      v-bind="dragSectionListOptions"
-      class="flex flex-col space-y-3 p-10 hover:border hover:rounded-xl"
-    >
-      <template #item="{ element }">
-        <div class="text-xl font-semibold mb-3">
-          {{ element.name }}
-        </div>
-        <draggable
-          v-model="taskInputs"
-          class="h-screen overflow-y-auto"
-          v-bind="dragTaskListOptions"
-        >
-          <template #item="{ element }">
-            <li class="cursor-pointer bg-white w-72 rounded-lg p-4 mb-3 border">
-              {{ element.name }}
-            </li>
-            -*
-          </template>
-          <template #footer>
-            <div class="flex flex-col">
-              <input
-                v-show="selectedSectionId === section.id"
-                :ref="
-                  el => {
-                    taskInputs[section.id] = el;
-                  }
-                "
-                v-model="task"
-                type="text"
-                class="mb-3 w-72 focus:outline-none py-3 px-4 bg-white rounded-lg border focus:outline-none"
-                placeholder="New Task"
-                @focusout="selectedSectionId = null"
-                @keydown.enter="addTask(section)"
-              />
-
-              <button
-                class="flex text-gray-800 items-center justify-center cursor-pointer focus:outline-none bg-white w-72 rounded-lg p-2 mb-3 border"
-                @click="displayAddTaskInput(section.id)"
-              >
-                <svg
-                  class="w-6 h-6"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-                <span class="text-sm font-medium">Add Task</span>
-              </button>
-            </div>
-          </template>
-        </draggable>
-      </template>
-    </draggable>
-    <div
-      class="flex flex-col space-y-3 p-10 w-96 hover:border hover:rounded-xl"
-    >
-      <h3 class="flex items-center">
-        <span
-          v-if="isAddingSection === false"
-          class="underline font-light"
-          @click="displayAddSectionInput"
-          >+ Add Section</span
-        >
-      </h3>
-      <input
-        v-if="isAddingSection === true"
-        ref="addSection"
-        v-model="section"
-        type="text"
-        class="mb-3 w-72 focus:outline-none py-3 px-4 bg-white rounded-lg border focus:outline-none"
-        placeholder="New Section"
-        @focusout="addSection"
-        @keydown.enter="addSection"
-      />
-    </div>-->
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import TeamModalContainer from '@/components/custom/TeamModalContainer.vue';
 
 export default {
   name: 'Dashboard',
@@ -152,6 +91,17 @@ export default {
       this.$nextTick(() => {
         this.$refs.addTeam.focus();
       });
+    },
+    async showTaskModal(teamId) {
+      this.$sidebarModal.show(
+        TeamModalContainer,
+        {
+          teamId
+        },
+        {
+          width: 800
+        }
+      );
     },
     async addTeam() {
       if (this.teamModel.name === '') {

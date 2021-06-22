@@ -1,4 +1,5 @@
 import './axios';
+import './vue-draggable';
 import './vue-toast';
 import './vue-sidebar-modal';
 import './vue-lodash';

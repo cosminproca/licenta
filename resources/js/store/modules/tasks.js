@@ -1,4 +1,4 @@
-import { index, show, store, update, destroy } from '@/api/tasks';
+import { index, show, store, update, updateAll, destroy } from '@/api/tasks';
 import { SET_DATA, REMOVE_DATA, SET_MODEL, RESET_MODEL } from '@/utils/store';
 import Form from 'vform';
 
@@ -23,11 +23,13 @@ export const state = {
 };
 
 export const getters = {
-  dataArray: state => Object.values(state.data)
+  dataArray: state => state.data
 };
 
 export const mutations = {
-  SET_DATA,
+  SET_DATA: (state, payload) => {
+    state.data = payload;
+  },
   SET_MODEL,
   RESET_MODEL,
   REMOVE_DATA
@@ -62,6 +64,14 @@ export const actions = {
     const res = await update(teamId, form);
 
     commit('SET_MODEL', res.data);
+
+    return res;
+  },
+
+  async updateAll({ commit }, { teamId, id, subTasks }) {
+    const res = await updateAll(teamId, id, subTasks);
+
+    commit('SET_DATA', res.data);
 
     return res;
   },

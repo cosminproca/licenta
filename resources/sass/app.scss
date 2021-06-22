@@ -1,42 +1,16 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import './tailwind';
+@import './plugins/plugins';
 
-// vue toast
-@import '~vue-toast-notification/dist/theme-sugar.css';
-// @import '~vue-toast-notification/dist/theme-default.css';
-// vue sidebar
-@import "~vue-sidebar-modal/dist/vue-sidebar-modal";
-// vue select
-@import "~vue-select/src/scss/vue-select.scss";
-// vue quill
-@import '~@morioh/v-quill-editor/dist/editor.css';
-// vue timepicker
-@import '~vue2-timepicker/dist/VueTimepicker.css';
-// vue sweetalert
-@import '~sweetalert2/dist/sweetalert2.min.css';
-// vue loading overlay
-@import '~vue-loading-overlay/dist/vue-loading.css';
-// vue datepicker
-@import '~vue2-datepicker/index.css';
-
-.v-toast--bottom {
-  z-index: 9999 !important;
-}
-
-.vs__dropdown-toggle {
-  @apply p-2;
-}
-
-.moving-card {
-  @apply opacity-50 bg-gray-100;
-}
-
+// prebuilt components
 @import 'elements/transitions';
 @import 'elements/buttons';
 @import 'elements/navbar';
 @import 'elements/card';
 
+// custom classes
+.moving-card {
+  @apply opacity-50 bg-gray-100;
+}
 #app {
   @apply min-h-screen flex flex-col bg-blue-50;
 }

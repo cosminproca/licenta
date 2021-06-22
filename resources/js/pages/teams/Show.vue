@@ -4,7 +4,7 @@
       v-model="task_lists"
       v-bind="dragTaskListOptions"
       class="flex space-x-16"
-      @update="updateTaskLists"
+      @change="updateTaskLists"
     >
       <card
         v-for="task_list in task_lists"
@@ -16,7 +16,9 @@
           class="flex justify-between items-center mb-10"
           @click="displayEditTaskListInput(task_list.id)"
         >
-          <span class="text-xl font-semibold">{{ task_list.name }}</span>
+          <span class="text-xl font-semibold truncate">
+            {{ task_list.name }}
+          </span>
           <div class="flex items-center">
             <svg
               class="w-6 h-6 cursor-pointer mr-2"
@@ -63,7 +65,7 @@
           v-model="task_list.tasks"
           v-bind="dragTaskOptions"
           class="flex flex-col space-y-4 h-full overflow-y-auto overflow-x-hidden"
-          @update="updateTaskLists"
+          @change="updateTaskLists"
         >
           <li
             v-for="task in task_list.tasks"
@@ -73,8 +75,10 @@
           >
             <div class="flex flex-col w-full space-y-4">
               <div class="flex items-center justify-between">
-                <div class="flex items-center">
-                  <span> #{{ task.id }}: {{ task.name }} </span>
+                <div class="flex items-center w-52">
+                  <span class="truncate">
+                    #{{ task.id }}: {{ task.name }}
+                  </span>
                 </div>
 
                 <div class="flex items-center space-x-2">
@@ -156,6 +160,7 @@
                       :ref="`taskDateInputs-${task.id}`"
                       v-model="task.due_date"
                       class="w-36"
+                      input-class="px-2 py-1 bg-white rounded-lg border focus:outline-none w-full"
                       format="YYYY-MM-DD"
                       value-type="format"
                       @change="changeDate(task)"
@@ -242,16 +247,12 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex';
-import draggable from 'vuedraggable';
+import { mapState, mapActions } from 'vuex';
 import TaskModalContainer from '@/components/custom/TaskModalContainer.vue';
 import { format } from 'date-fns';
 
 export default {
   name: 'Show',
-  components: {
-    draggable
-  },
   middleware: 'auth',
   metaInfo() {
     return { title: this.$t('home') };
@@ -273,14 +274,10 @@ export default {
         team_id: 0,
         name: '',
         tags: []
-      },
-      isAddingTask: false
+      }
     };
   },
   computed: {
-    ...mapGetters('task_lists', {
-      task_lists: 'dataArray'
-    }),
     ...mapState('tasks', {
       taskItem: 'model'
     }),
@@ -384,7 +381,7 @@ export default {
         },
         {
           'before-close': () => {
-            this.$router.replace(`/teams/${this.$route.params.id}`);
+            this.$router.replace(path);
           }
         }
       );
@@ -465,10 +462,6 @@ export default {
       }
 
       this.selectedTaskId = taskId;
-
-      this.$nextTick(() => {
-        this.$refs[`taskDateInputs-${taskId}`][0].showCalendar();
-      });
     },
     async changeDate(task) {
       await this.updateTask({
@@ -482,7 +475,6 @@ export default {
     },
     async addTask(taskList) {
       if (this.taskModel.name === '') {
-        this.isAddingTask = false;
         return;
       }
 

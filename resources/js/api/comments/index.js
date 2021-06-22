@@ -52,17 +52,6 @@ async function update(teamId, taskId, form) {
   }
 }
 
-async function updateAll(teamId, taskId, taskLists) {
-  try {
-    return await axios.put(`${module(teamId, taskId)}/update_all`, {
-      task_lists: taskLists
-    });
-  } catch (err) {
-    console.log(err);
-    return err.response.data;
-  }
-}
-
 async function destroy(teamId, taskId, id) {
   try {
     const res = await axios.delete(`${module(teamId, taskId)}/${id}`);
@@ -79,4 +68,4 @@ async function destroy(teamId, taskId, id) {
   }
 }
 
-export { index, show, store, update, updateAll, destroy };
+export { index, show, store, update, destroy };

@@ -60,7 +60,7 @@ export const actions = {
 
   async updateAll({ commit }, { teamId, taskLists }) {
     const res = await updateAll(teamId, taskLists);
-    console.log(res);
+
     commit('SET_DATA', res.data);
 
     return res;

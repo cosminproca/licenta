@@ -3,12 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTaskRequest;
+use App\Http\Requests\UpdateAllTaskSubTasksRequest;
 use App\Http\Requests\UpdateTaskRequest;
+use App\Http\Resources\TaskListResource;
 use App\Http\Resources\TaskResource;
+use App\Models\SubTask;
 use App\Models\Task;
+use App\Models\TaskList;
 use App\Models\Team;
 use DateTime;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class TaskController extends Controller
 {
@@ -93,6 +98,38 @@ class TaskController extends Controller
             'status' => $status,
             'data' => new TaskResource($task->load($this->relations))
         ]);
+    }
+
+    /**
+     * Update all resources in storage.
+     *
+     * @param Team $team
+     * @param UpdateAllTaskSubTasksRequest $request
+     * @param Task $task
+     * @return JsonResponse
+     */
+    public function updateAll(Team $team, UpdateAllTaskSubTasksRequest $request, Task $task)
+    {
+        $validated_data = $request->validated();
+
+        $sub_tasks = SubTask::findMany(collect($validated_data['sub_tasks'])->pluck('id'));
+
+        foreach ($sub_tasks as $sub_task) {
+            $sub_task->timestamps = false;
+
+            foreach ($validated_data['sub_tasks'] as $subTaskFrontEnd) {
+                if ($subTaskFrontEnd['id'] == $task->id) {
+                    $sub_task->update(['order_column' => $subTaskFrontEnd['order_column']]);
+                    $sub_task->save();
+                }
+            }
+        }
+
+        $task->subTasks()->saveMany($sub_tasks);
+        $task->save();
+        $task->refresh();
+
+        return response()->json(new TaskResource($task->load($this->relations)));
     }
 
     /**

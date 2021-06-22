@@ -1,0 +1,21 @@
+// vue toast
+// @import '~vue-toast-notification/dist/theme-default.css';
+@import '~vue-toast-notification/dist/theme-sugar.css';
+// vue sidebar
+@import "~vue-sidebar-modal/dist/vue-sidebar-modal";
+// vue select
+@import "~vue-select/src/scss/vue-select.scss";
+// vue quill
+@import '~@morioh/v-quill-editor/dist/editor.css';
+// vue timepicker
+@import '~vue2-timepicker/dist/VueTimepicker.css';
+// vue sweetalert
+@import '~sweetalert2/dist/sweetalert2.min.css';
+// vue loading overlay
+@import '~vue-loading-overlay/dist/vue-loading.css';
+// vue datepicker
+@import '~vue2-datepicker/index.css';
+// overriding plugin styles
+@import '../plugins/vue-toast';
+@import '../plugins/vue-select';
+@import '../plugins/vue-datepicker';
