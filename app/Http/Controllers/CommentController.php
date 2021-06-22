@@ -26,9 +26,10 @@ class CommentController extends Controller
      * Display a listing of the resource.
      *
      * @param Team $team
+     * @param Task $task
      * @return JsonResponse
      */
-    public function index(Team $team)
+    public function index(Team $team, Task $task)
     {
         return response()->json(CommentResource::collection(Comment::all()->load($this->relations)));
     }
@@ -37,10 +38,11 @@ class CommentController extends Controller
      * Store a newly created resource in storage.
      *
      * @param Team $team
+     * @param Task $task
      * @param StoreCommentRequest $request
      * @return JsonResponse
      */
-    public function store(Team $team, StoreCommentRequest $request)
+    public function store(Team $team, Task $task, StoreCommentRequest $request)
     {
         $validated_data = $request->validated();
         $comment = Comment::create($validated_data);
@@ -57,10 +59,11 @@ class CommentController extends Controller
      * Display the specified resource.
      *
      * @param Team $team
+     * @param Task $task
      * @param Comment $comment
      * @return JsonResponse
      */
-    public function show(Team $team, Comment $comment)
+    public function show(Team $team, Task $task, Comment $comment)
     {
         return response()->json(new CommentResource($comment->load($this->relations)));
     }
@@ -69,11 +72,12 @@ class CommentController extends Controller
      * Update the specified resource in storage.
      *
      * @param Team $team
+     * @param Task $task
      * @param UpdateCommentRequest $request
      * @param Comment $comment
      * @return JsonResponse
      */
-    public function update(Team $team, UpdateCommentRequest $request, Comment $comment)
+    public function update(Team $team, Task $task, UpdateCommentRequest $request, Comment $comment)
     {
         $validated_data = $request->validated();
 
@@ -89,10 +93,11 @@ class CommentController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Team $team
+     * @param Task $task
      * @param Comment $comment
      * @return JsonResponse
      */
-    public function destroy(Team $team, Comment $comment)
+    public function destroy(Team $team, Task $task, Comment $comment)
     {
         return response()->json([
             'status' => $comment->delete()
