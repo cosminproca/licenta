@@ -18,7 +18,7 @@ class CreateCommentsTable extends Migration
             $table->foreignId('team_id');
             $table->foreignId('user_id');
             $table->foreignId('task_id');
-            $table->text('text');
+            $table->mediumText('text');
             $table->timestamps();
         });
     }

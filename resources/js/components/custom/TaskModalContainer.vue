@@ -341,47 +341,11 @@
           </button>
         </div>
       </div>
-      <div class="mt-10">
-        <div class="text-xl font-semibold my-4">
-          Comments
-        </div>
-        <ul class="space-y-4">
-          <li
-            v-for="comment in comments"
-            :key="comment.id"
-            :class="
-              comment.user.id === user.id
-                ? 'bg-blue-300 text-white'
-                : 'bg-gray-200'
-            "
-            class="flex flex-col w-full rounded-lg p-4 border"
-          >
-            <div
-              class="flex items-center space-x-2 py-2"
-              :class="
-                comment.user.id === user.id
-                  ? 'border-white border-b'
-                  : 'border-black border-b'
-              "
-            >
-              <img
-                v-if="comment.user"
-                :src="comment.user.photo_url"
-                class="rounded-full w-6 h-6"
-              />
-              <div class="truncate font-semibold">
-                {{ comment.user.name }}
-              </div>
-            </div>
-            <div class="mt-3 font-medium" v-html="comment.text" />
-            <div class="font-light italic text-right mt-3">
-              Sent at {{ formatDate(comment.created_at) }}
-            </div>
-          </li>
-        </ul>
+      <div class="text-xl font-semibold mt-10">
+        Comments
       </div>
       <div
-        class="mt-10 flex flex-col border rounded-xl h-96 border-gray-300 p-4"
+        class="mt-5 flex flex-col border rounded-xl h-96 border-gray-300 p-4"
       >
         <div class="flex h-full">
           <img :src="user.photo_url" class="rounded-full w-9 h-9 mr-3" />
@@ -401,6 +365,74 @@
             Comment
           </button>
         </div>
+      </div>
+      <div class="mt-10">
+        <ul class="space-y-4">
+          <li
+            v-for="comment in comments.slice().reverse()"
+            :key="comment.id"
+            :class="comment.user.id === user.id ? 'bg-gray-300' : 'bg-gray-100'"
+            class="flex flex-col w-full rounded-lg p-4 border"
+          >
+            <div
+              class="flex items-center justify-between pb-3 border-black border-b"
+              :class="
+                comment.user.id === user.id
+                  ? 'border-black border-b'
+                  : 'border-black border-b'
+              "
+            >
+              <div class="flex items-center space-x-2">
+                <img
+                  v-if="comment.user"
+                  :src="comment.user.photo_url"
+                  class="rounded-full w-6 h-6"
+                />
+                <div class="truncate font-semibold">
+                  {{ comment.user.name }}
+                </div>
+              </div>
+              <div
+                v-if="comment.user.id === user.id"
+                class="flex items-center space-x-2"
+              >
+                <!--                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6 cursor-pointer text-blue-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                  />
+                </svg>-->
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6 cursor-pointer text-red-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  @click="removeComment(comment.id)"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                  />
+                </svg>
+              </div>
+            </div>
+            <div class="mt-3 font-medium" v-html="comment.text" />
+            <div class="font-light italic text-right mt-3">
+              Sent at {{ formatDate(comment.created_at) }}
+            </div>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
@@ -514,7 +546,7 @@ export default {
     ...mapActions('comments', {
       updateComment: 'update',
       fetchComments: 'index',
-      deleteComments: 'destroy',
+      deleteComment: 'destroy',
       createComment: 'store'
     }),
     ...mapActions('sub_tasks', {
@@ -695,6 +727,29 @@ export default {
         this.$refs[`subTaskFooterInputs-${taskId}`].focus();
       });
     },
+    async removeComment(commentId) {
+      this.$swal({
+        title: 'Remove this comment?',
+        text: "Are you sure? You won't be able to revert this!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc0c51',
+        confirmButtonText: 'Yes, Delete it!'
+      }).then(async result => {
+        if (result.value) {
+          await this.deleteComment({
+            id: commentId,
+            teamId: this.$route.params.id,
+            taskId: this.$route.params.taskId
+          });
+
+          await this.fetchComments({
+            teamId: this.$route.params.id,
+            taskId: this.$route.params.taskId
+          });
+        }
+      });
+    },
     async sendComment() {
       await this.createComment({
         teamId: this.$route.params.id,
@@ -723,8 +778,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.mx-input {
-  @apply py-5 px-4;
-}
-</style>
+<style scoped></style>
