@@ -10,7 +10,6 @@ use App\Models\Task;
 use App\Models\TaskList;
 use App\Models\Team;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Resources\Json\JsonResource;
 
 class TaskListController extends Controller
 {
@@ -22,7 +21,7 @@ class TaskListController extends Controller
 
     public function __construct()
     {
-        //$this->authorizeResource(TaskList::class, 'task_list,teams');
+        $this->authorizeResource('App\Models\Team,taskList', 'team,taskList');
     }
 
     /**
@@ -31,7 +30,7 @@ class TaskListController extends Controller
      * @param Team $team
      * @return JsonResponse
      */
-    public function index(Team $team)
+    public function index(Team $team): JsonResponse
     {
         return response()->json(TaskListResource::collection(TaskList::all()->load($this->relations)->sortBy('order_column')));
     }
@@ -43,10 +42,8 @@ class TaskListController extends Controller
      * @param StoreTaskListRequest $request
      * @return JsonResponse
      */
-    public function store(Team $team, StoreTaskListRequest $request)
+    public function store(Team $team, StoreTaskListRequest $request): JsonResponse
     {
-        //$this->authorize('store', [TaskList::class, $team]);
-
         $validated_data = $request->validated();
         $taskList = TaskList::create($validated_data);
 
@@ -65,7 +62,7 @@ class TaskListController extends Controller
      * @param TaskList $taskList
      * @return JsonResponse
      */
-    public function show(Team $team, TaskList $taskList)
+    public function show(Team $team, TaskList $taskList): JsonResponse
     {
         return response()->json(new TaskListResource($taskList->load($this->relations)));
     }
@@ -78,7 +75,7 @@ class TaskListController extends Controller
      * @param TaskList $taskList
      * @return JsonResponse
      */
-    public function update(Team $team, UpdateTaskListRequest $request, TaskList $taskList)
+    public function update(Team $team, UpdateTaskListRequest $request, TaskList $taskList): JsonResponse
     {
         $validated_data = $request->validated();
         $status = $taskList->update($validated_data);
@@ -90,6 +87,22 @@ class TaskListController extends Controller
     }
 
     /**
+     * Remove the specified resource from storage.
+     *
+     * @param Team $team
+     * @param TaskList $taskList
+     * @return JsonResponse
+     */
+    public function destroy(Team $team, TaskList $taskList): JsonResponse
+    {
+        $taskList->tasks()->delete();
+
+        return response()->json([
+            'status' => $taskList->delete()
+        ]);
+    }
+
+    /**
      * Update all resources in storage.
      *
      * @param Team $team
@@ -97,29 +110,13 @@ class TaskListController extends Controller
      * @param TaskList $taskList
      * @return JsonResponse
      */
-    public function updateAll(Team $team, UpdateAllTaskListRequest $request, TaskList $taskList)
+    public function updateAll(Team $team, UpdateAllTaskListRequest $request, TaskList $taskList): JsonResponse
     {
         $validated_data = $request->validated();
 
         $this->updateTaskListOrder($validated_data);
 
         return response()->json(TaskListResource::collection(TaskList::all()->load($this->relations)->sortBy('order_column')));
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Team $team
-     * @param TaskList $taskList
-     * @return JsonResponse
-     */
-    public function destroy(Team $team, TaskList $taskList)
-    {
-        $taskList->tasks()->delete();
-
-        return response()->json([
-            'status' => $taskList->delete()
-        ]);
     }
 
     private function updateTaskListTasksOrder($taskListFrontEnd)

@@ -18,21 +18,21 @@ class TaskPolicy
 
     public function view(User $user, Task $task, Team $team): bool
     {
-        return $task->team_id === $team->id || checkIfUserBelongsToTeam($team->id);
+        return $task->team_id === $team->id;
     }
 
     public function create(User $user, Task $task, Team $team): bool
     {
-        return $task->team_id === $team->id || checkIfUserBelongsToTeam($team->id);
+        return $task->team_id === $team->id;
     }
 
     public function update(User $user, Task $task, Team $team): bool
     {
-        return $task->team_id === $team->id || checkIfUserBelongsToTeam($team->id);
+        return $task->team_id === $team->id;
     }
 
     public function delete(User $user, Task $task, Team $team): bool
     {
-        return $task->team_id === $team->id || checkIfUserBelongsToTeam($team->id);
+        return $task->team_id === $team->id;
     }
 }

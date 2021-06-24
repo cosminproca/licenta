@@ -5,19 +5,15 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateAllTaskSubTasksRequest;
 use App\Http\Requests\UpdateTaskRequest;
-use App\Http\Resources\TaskListResource;
 use App\Http\Resources\TaskResource;
 use App\Models\SubTask;
 use App\Models\Task;
-use App\Models\TaskList;
 use App\Models\Team;
-use DateTime;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Resources\Json\JsonResource;
 
 class TaskController extends Controller
 {
-    private $relations = [
+    private array $relations = [
         'taskList',
         'subTasks',
         'subTasks.assignee',
@@ -26,7 +22,7 @@ class TaskController extends Controller
 
     public function __construct()
     {
-        //$this->authorizeResource(Task::class, 'task,team');
+        $this->authorizeResource('App\Models\Team,task', 'team,task');
     }
 
     /**
@@ -35,7 +31,7 @@ class TaskController extends Controller
      * @param Team $team
      * @return JsonResponse
      */
-    public function index(Team $team)
+    public function index(Team $team): JsonResponse
     {
         return response()->json(TaskResource::collection(Task::all()->load($this->relations)));
     }
@@ -47,7 +43,7 @@ class TaskController extends Controller
      * @param StoreTaskRequest $request
      * @return JsonResponse
      */
-    public function store(Team $team, StoreTaskRequest $request)
+    public function store(Team $team, StoreTaskRequest $request): JsonResponse
     {
         $validated_data = $request->validated();
         $task = Task::create($validated_data);
@@ -71,7 +67,7 @@ class TaskController extends Controller
      * @param Task $task
      * @return JsonResponse
      */
-    public function show(Team $team, Task $task)
+    public function show(Team $team, Task $task): JsonResponse
     {
         return response()->json(new TaskResource($task->load($this->relations)));
     }
@@ -84,7 +80,7 @@ class TaskController extends Controller
      * @param Task $task
      * @return JsonResponse
      */
-    public function update(Team $team, UpdateTaskRequest $request, Task $task)
+    public function update(Team $team, UpdateTaskRequest $request, Task $task): JsonResponse
     {
         $validated_data = $request->validated();
 
@@ -108,7 +104,7 @@ class TaskController extends Controller
      * @param Task $task
      * @return JsonResponse
      */
-    public function updateAll(Team $team, UpdateAllTaskSubTasksRequest $request, Task $task)
+    public function updateAll(Team $team, UpdateAllTaskSubTasksRequest $request, Task $task): JsonResponse
     {
         $validated_data = $request->validated();
 
@@ -139,7 +135,7 @@ class TaskController extends Controller
      * @param Task $task
      * @return JsonResponse
      */
-    public function destroy(Team $team, Task $task)
+    public function destroy(Team $team, Task $task): JsonResponse
     {
         return response()->json([
             'status' => $task->delete()

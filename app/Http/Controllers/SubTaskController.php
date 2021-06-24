@@ -20,7 +20,7 @@ class SubTaskController extends Controller
 
     public function __construct()
     {
-        //$this->authorizeResource(SubTask::class, 'subTask,team');
+        $this->authorizeResource('App\Models\Team,subTask', 'team,subTask');
     }
 
     /**

@@ -19,21 +19,21 @@ class CommentPolicy
 
     public function view(User $user, Comment $comment, Team $team): bool
     {
-        return $comment->team_id === $team->id || checkIfUserBelongsToTeam($team->id);
+        return $comment->team_id === $team->id;
     }
 
     public function create(User $user, Comment $comment, Team $team): bool
     {
-        return $comment->team_id === $team->id || checkIfUserBelongsToTeam($team->id);
+        return $comment->team_id === $team->id;
     }
 
     public function update(User $user, Comment $comment, Team $team): bool
     {
-        return $comment->team_id === $team->id || checkIfUserBelongsToTeam($team->id);
+        return $comment->team_id === $team->id;
     }
 
     public function delete(User $user, Comment $comment, Team $team): bool
     {
-        return $comment->team_id === $team->id || checkIfUserBelongsToTeam($team->id);
+        return $comment->team_id === $team->id;
     }
 }
