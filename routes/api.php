@@ -63,6 +63,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 Route::group(['middleware' => 'guest:api'], function () {
     Route::group(['prefix' => 'teams'], function(){
         Route::get('accept/{token}', [TeamController::class, 'acceptInvite'])->name('teams.accept_invite');
+        Route::get('resend_invite/{token}', [TeamController::class, 'resendInvite'])->name('teams.resend_invite');
     });
 
     Route::post('login', [LoginController::class, 'login']);

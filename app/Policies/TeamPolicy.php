@@ -27,11 +27,11 @@ class TeamPolicy
 
     public function update(User $user, Team $team): bool
     {
-        return $user->isOwnerOfTeam($team);
+        return checkIfUserBelongsToTeam($team->id);
     }
 
     public function delete(User $user, Team $team): bool
     {
-        return $user->isOwnerOfTeam($team);
+        return checkIfUserBelongsToTeam($team->id);
     }
 }

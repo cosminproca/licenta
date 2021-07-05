@@ -9,9 +9,11 @@ use App\Http\Requests\UpdateTeamRequest;
 use App\Http\Resources\TeamResource;
 use App\Models\Team;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
 use Mpociot\Teamwork\Exceptions\UserNotInTeamException;
 use Mpociot\Teamwork\Facades\Teamwork;
 use Mpociot\Teamwork\TeamInvite;
@@ -128,6 +130,14 @@ class TeamController extends Controller
         ]);
     }
 
+    private function generateInviteLink($token) {
+        $url = URL::temporarySignedRoute(
+            'teams.accept_invite', Carbon::now()->addMinutes(60), ['token' => $token]
+        );
+
+        return str_replace('/api', '', $url);
+    }
+
     /**
      * Invite User to a team.
      *
@@ -141,7 +151,9 @@ class TeamController extends Controller
 
         if (! Teamwork::hasPendingInvite($validated_data['email'], $team)) {
             Teamwork::inviteToTeam($validated_data['email'], $team, function ($invite) {
-                Mail::send('emails.invite', ['team' => $invite->team, 'invite' => $invite], function ($m) use ($invite) {
+                $url = $this->generateInviteLink($invite->accept_token);
+
+                Mail::send('emails.invite', ['team' => $invite->team, 'invite' => $invite, 'url' => $url], function ($m) use ($invite) {
                     $m->to($invite->email)->subject('Invitation to join team '.$invite->team->name);
                 });
             });
@@ -168,7 +180,9 @@ class TeamController extends Controller
     {
         $invite = TeamInvite::findOrFail($invite_id);
 
-        Mail::send('emails.invite', ['team' => $invite->team, 'invite' => $invite], function ($m) use ($invite) {
+        $url = $this->generateInviteLink($invite->accept_token);
+
+        Mail::send('emails.invite', ['team' => $invite->team, 'invite' => $invite, 'url' => $url], function ($m) use ($invite) {
             $m->to($invite->email)->subject('Invitation to join team '.$invite->team->name);
         });
 
