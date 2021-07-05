@@ -13,7 +13,7 @@ class TaskListPolicy
 
     public function viewAny(User $user, Team $team): bool
     {
-        return true;
+        return checkIfUserBelongsToTeam($team->id);
     }
 
     public function view(User $user, TaskList $taskList, Team $team): bool
@@ -21,9 +21,9 @@ class TaskListPolicy
         return $taskList->team_id === $team->id;
     }
 
-    public function create(User $user, TaskList $taskList, Team $team): bool
+    public function create(User $user, Team $team): bool
     {
-        return $taskList->team_id === $team->id;
+        return checkIfUserBelongsToTeam($team->id);
     }
 
     public function update(User $user, TaskList $taskList, Team $team): bool

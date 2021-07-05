@@ -20,7 +20,7 @@ class FileController extends Controller
      *
      * @var array
      */
-    private $hasManyModels = [
+    private array $hasManyModels = [
         Comment::class,
         Task::class
     ];

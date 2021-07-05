@@ -21,9 +21,9 @@ class TaskPolicy
         return $task->team_id === $team->id;
     }
 
-    public function create(User $user, Task $task, Team $team): bool
+    public function create(User $user, Team $team): bool
     {
-        return $task->team_id === $team->id;
+        return checkIfUserBelongsToTeam($team->id);
     }
 
     public function update(User $user, Task $task, Team $team): bool

@@ -19,7 +19,7 @@ class CommentController extends Controller
 
     public function __construct()
     {
-        //$this->authorizeResource(Comment::class, 'comment,team');
+        $this->authorizeResource('App\Models\Team,comment', 'team,comment');
     }
 
     /**
@@ -29,7 +29,7 @@ class CommentController extends Controller
      * @param Task $task
      * @return JsonResponse
      */
-    public function index(Team $team, Task $task)
+    public function index(Team $team, Task $task): JsonResponse
     {
         return response()->json(CommentResource::collection(Comment::all()->load($this->relations)));
     }
@@ -42,7 +42,7 @@ class CommentController extends Controller
      * @param StoreCommentRequest $request
      * @return JsonResponse
      */
-    public function store(Team $team, Task $task, StoreCommentRequest $request)
+    public function store(Team $team, Task $task, StoreCommentRequest $request): JsonResponse
     {
         $validated_data = $request->validated();
         $comment = Comment::create($validated_data);
@@ -63,7 +63,7 @@ class CommentController extends Controller
      * @param Comment $comment
      * @return JsonResponse
      */
-    public function show(Team $team, Task $task, Comment $comment)
+    public function show(Team $team, Task $task, Comment $comment): JsonResponse
     {
         return response()->json(new CommentResource($comment->load($this->relations)));
     }
@@ -77,7 +77,7 @@ class CommentController extends Controller
      * @param Comment $comment
      * @return JsonResponse
      */
-    public function update(Team $team, Task $task, UpdateCommentRequest $request, Comment $comment)
+    public function update(Team $team, Task $task, UpdateCommentRequest $request, Comment $comment): JsonResponse
     {
         $validated_data = $request->validated();
 

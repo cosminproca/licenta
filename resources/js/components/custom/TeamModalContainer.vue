@@ -122,7 +122,6 @@
 
 <script>
 import { mapActions, mapGetters, mapState } from 'vuex';
-import Form from 'vform';
 
 export default {
   name: 'TeamModalContainer',
@@ -173,6 +172,8 @@ export default {
       await this.updateTeam(this.team);
 
       await this.fetchTeam(this.teamId);
+
+      await this.fetchTeams();
     },
     async removeTeam() {
       await this.deleteTeam(this.teamId);
